@@ -48,6 +48,7 @@ int loopCount = 0; //number of times the loop has run
 int clearPoint = 0;  //when the loopCount is reset
 boolean clearScore = false;
 
+int oldheadX, oldheadY;
 //initialize the display
 // Adafruit_ILI9341 tft = Adafruit_ILI9341(_cs, _dc, _mosi, _sclk, _rst, _miso);
 
@@ -89,24 +90,51 @@ void setup() {
 void loop() {
 
   // Add for M5Stack Input
-  if(M5.BtnA.isPressed() && M5.BtnC.isPressed()){up();}
-  if(M5.BtnB.isPressed() && M5.BtnC.isPressed()){down();}
-  if(M5.BtnA.isPressed()){left  ();}
-  if(M5.BtnB.isPressed()){right ();}
+  // if(M5.BtnA.isPressed() && M5.BtnC.isPressed()){up();}
+  // if(M5.BtnB.isPressed() && M5.BtnC.isPressed()){down();}
+  // if(M5.BtnA.isPressed()){left  ();}
+  // if(M5.BtnB.isPressed()){right ();}
   if(M5.BtnC.isPressed()){select();}
-  //
+
+  if(M5.BtnA.isPressed()) {
+    // heading to Right
+    if (oldheadX < headX) up();
+    // heading to Left
+    if (oldheadX > headX) down();       
+    // heading to up
+    if (oldheadY > headY) left();    
+    // heading to down            
+    if (oldheadY < headY) right();    
+  }
+
+  if(M5.BtnB.isPressed()) {
+    // heading to Right
+    if (oldheadX < headX) down();
+    // heading to Left
+    if (oldheadX > headX) up();       
+    // heading to up
+    if (oldheadY > headY) right();    
+    // heading to down            
+    if (oldheadY < headY) left();    
+  }    
 
   if (clearScore and start) { //resets score from last game, won't clear
     score = 1;                //until new game starts so you can show off
     printScore();             //your own score
     clearScore = false;
   }
+
   if (millis() - offsetM > gs and start) {
     beenHeadX[loopCount] = headX;  //adds current head coordinates to be
     beenHeadY[loopCount] = headY;  //covered later
+
+    // save current position to determine the direction
+    oldheadX = headX;
+    oldheadY = headY;
     
     headX = headX + (changeX);  //head moved
     headY = headY + (changeY); 
+
     
     if (headX - foodX == 0 and headY - foodY == 0) { //food
       score += 1;
