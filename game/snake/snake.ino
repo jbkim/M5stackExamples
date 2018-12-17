@@ -10,9 +10,13 @@
 //
 //  To begin the game, press the select/start/fire/A button on HB badge (default pin 15)
 //
+// 
 // For M5Sack porting, refer to https://macsbug.wordpress.com/2018/01/14/esp32-snake-with-m5stack/
+// Instead of pressing two keys simultaneously to move, I upgraded it with only two keys.
+// @jbkim
 
-float gameSpeed = 2;  //Higher numbers are faster
+
+float gameSpeed = 6;  //Higher numbers are faster
 
 // #include <Adafruit_GFX.h>
 // #include <Adafruit_ILI9341.h>
